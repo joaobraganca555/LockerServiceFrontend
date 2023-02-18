@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary tw-shadow-md">
+  <div class="container-fluid">
+    <img class="logo tw-mx-8" src="assets/images/logo.png" alt="logo" width="200" (click)="redirect('')">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav tw-gap-1">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Empresa</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link">Administração</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link">Contactos</a>
+        </li>
+        <li class="nav-item" (click)="logout()">
+          <a class="nav-link color">
+            Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="tw-m-10">
+  <router-outlet></router-outlet>
+</div>

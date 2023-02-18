@@ -1,0 +1,12 @@
+.iconBack {
+  width: 35px;
+}
+
+.title {
+  font-size: 30px;
+}
+
+svg:hover {
+  cursor: pointer;
+  border: 1px solid gray;
+}

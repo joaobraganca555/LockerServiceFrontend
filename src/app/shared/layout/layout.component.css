@@ -1,0 +1,33 @@
+img:hover {
+  cursor: pointer;
+}
+
+.navbar {
+  background-color: white !important;
+}
+
+.nav-link {
+  font-size: 20px;
+}
+
+.nav-link:hover {
+  cursor: pointer;
+  color: gray;
+}
+
+.color {
+  color: rgb(91, 40, 178);
+}
+
+.icon {
+  width: 20px;
+}
+
+@media (max-width: 991px) {
+  .nav-link {
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(245, 245, 245, 0.411);
+  }
+}

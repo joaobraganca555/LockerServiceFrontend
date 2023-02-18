@@ -1,0 +1,34 @@
+<div class="background tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center">
+  <div class="tw-flex tw-flex-col">
+    <div class="login tw-shadow-lg tw-flex tw-flex-col rounded">
+      <img src="assets/images/logo.png" alt="logo" width="70%" ref="" />
+
+      <form>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email / Username</label>
+          <input [ngClass]="{'redBorder': failedLogin}" type="email" id="email" class="form-control" name="email"
+            [(ngModel)]="emailOrUsername" required />
+          <div *ngIf="!failedLogin" id="emailHelp" class="form-text">
+            We'll never share your email or username with anyone else.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input [ngClass]="{'redBorder': failedLogin}" type="password" class="form-control" name="password"
+            id="passowrd" [(ngModel)]="password" required />
+          <label class="errorMessage" *ngIf="failedLogin">{{pd?.detail}}</label>
+        </div>
+
+        <div class="tw-flex tw-justify-between">
+          <button type="button" class="btn btn-outline-primary" (click)="redirect('register')">
+            Register
+          </button>
+          <button type="button" class="btn btn-primary" (click)="login()">
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="tw-flex tw-justify-center tw-italic">© copyright MTSTDS</div>
+  </div>
+</div>

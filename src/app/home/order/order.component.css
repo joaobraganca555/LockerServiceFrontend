@@ -1,0 +1,87 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  border: solid 1px lightgray;
+}
+
+.sub-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  gap: 50px;
+}
+
+.radioGroup {
+  border-radius: 5px;
+  border: solid 1px lightgray;
+}
+
+.form-check:hover {
+  background-color: rgb(247, 244, 244);
+}
+
+.icon {
+  width: 20px;
+}
+
+.search {
+  width: 100%;
+}
+
+.listTitle {
+  padding: 4px;
+  font-weight: bold;
+  border: 1px solid rgb(180, 179, 179);
+  border-radius: 5px;
+  background-color: rgb(245, 244, 244);
+}
+
+.priceLabel {
+  font-weight: bold;
+}
+
+.price {
+  padding: 3px;
+  display: flex;
+  justify-content: flex-end;
+  min-width: 100px;
+  border-radius: 3px;
+  border: 1px solid rgb(180, 179, 179);
+}
+
+.taxLabel {
+  font-weight: lighter;
+}
+
+.buttons {
+  padding: 0 60px;
+}
+
+.btn {
+  min-width: 120px;
+}
+
+.lists {
+  gap: 100px;
+}
+
+.listItem {
+  gap: 90px;
+}
+
+.col1 {
+  width: 320px;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 13px;
+  padding: 3px 3px;
+}
+
+.redBorder {
+  border: 1px solid red;
+}

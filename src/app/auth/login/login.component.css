@@ -1,0 +1,28 @@
+.login {
+  width: 500px;
+  height: 500px;
+  margin-bottom: 200px;
+  background-color: #fff;
+}
+
+form {
+  margin: 20px 40px;
+}
+
+img {
+  margin: 20px 40px;
+}
+
+.background {
+  background-color: rgb(235, 234, 234);
+}
+
+.errorMessage {
+  color: red;
+  font-size: 13px;
+  padding: 3px 3px;
+}
+
+.redBorder {
+  border: 1px solid red;
+}
