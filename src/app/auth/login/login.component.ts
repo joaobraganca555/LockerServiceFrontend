@@ -1,51 +1,42 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { problemDetail } from 'src/app/models/problemDetail.interface';
-import { Subject, takeUntil } from 'rxjs';
+import { ProblemDetail } from 'src/app/models/problemDetail.model';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnDestroy {
-  private unsubscribe$ = new Subject<void>();
-
+export class LoginComponent {
   emailOrUsername = '';
   password = '';
   failedLogin = false;
-  pd: problemDetail | undefined;
+  pd = new ProblemDetail();
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-  ) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   redirect(pageName: string) {
     this.router.navigate([`${pageName}`]);
   }
 
   login() {
-    this.authService
-      .login(this.emailOrUsername, this.password)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (data) => {
+    if (this.emailOrUsername === '' || this.password === '') {
+      this.failedLogin = true;
+      this.pd.detail = 'Empty password or email';
+    } else {
+      this.authService.login(this.emailOrUsername, this.password).subscribe({
+        next: (data) => {
           if (data) {
-            this.router.navigate([`home`]);
+            this.router.navigate(['home']);
             this.failedLogin = false;
           }
         },
-        (error) => {
+        error: (error) => {
           this.pd = error.error;
           this.failedLogin = true;
         }
-      );
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+      });
+    }
   }
 }

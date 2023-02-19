@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
-// import 'sweetalert2/dist/sweetalert2.min.css';
-// import 'sweetalert2-themes/bootstrap-4/bootstrap-4.min.css';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +45,42 @@ export class AlertService {
       showCancelButton: true,
       confirmButtonText: confirmButtonText,
       cancelButtonText: cancelButtonText
+    });
+  }
+
+  // Success toast
+  showSuccessToast(message: string) {
+    Swal.fire({
+      toast: true,
+      position: 'top',
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
+
+  // Warning toast
+  showWarningToast(message: string) {
+    Swal.fire({
+      toast: true,
+      position: 'top',
+      icon: 'warning',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
+
+  // Info toast
+  showInfoToast(message: string) {
+    Swal.fire({
+      toast: true,
+      position: 'top',
+      icon: 'info',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000
     });
   }
 }

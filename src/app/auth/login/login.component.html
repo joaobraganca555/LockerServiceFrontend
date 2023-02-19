@@ -16,7 +16,7 @@
           <label for="password" class="form-label">Password</label>
           <input [ngClass]="{'redBorder': failedLogin}" type="password" class="form-control" name="password"
             id="passowrd" [(ngModel)]="password" required />
-          <label class="errorMessage" *ngIf="failedLogin">{{pd?.detail}}</label>
+          <label class="errorMessage" *ngIf="failedLogin">{{pd.detail}}</label>
         </div>
 
         <div class="tw-flex tw-justify-between">
@@ -29,6 +29,6 @@
         </div>
       </form>
     </div>
-    <div class="tw-flex tw-justify-center tw-italic">© copyright MTSTDS</div>
+    <div class="tw-flex tw-justify-center tw-italic">© copyright MTSDS</div>
   </div>
 </div>

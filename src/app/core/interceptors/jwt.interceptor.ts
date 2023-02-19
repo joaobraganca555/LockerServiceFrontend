@@ -9,7 +9,7 @@ import {
 import { map, Observable } from 'rxjs';
 import { AuthService } from '../services/auth/auth.service';
 import { environment } from 'src/environments/environment.development';
-import { User } from 'src/app/models/user.interface';
+import { User } from 'src/app/models/user.model';
 import jwtDecode from 'jwt-decode';
 
 @Injectable()
@@ -20,9 +20,8 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    const user = this.authService.getCurrentUser();
 
-    //Caso seja o login, lidar com o response para definir o header
+    // Caso seja o login, lidar com o response para definir o header
     if (request.url === `${environment.gatewayBaseUrl}/auth/login`) {
       return next.handle(request).pipe(
         map((event: HttpEvent<any>) => {
@@ -43,8 +42,7 @@ export class JwtInterceptor implements HttpInterceptor {
                 exp: decodedToken.exp,
                 token
               };
-
-              localStorage.setItem('user', JSON.stringify(user));
+              this.authService.setUser(user);
             }
           }
           return event;
@@ -53,13 +51,13 @@ export class JwtInterceptor implements HttpInterceptor {
     }
 
     //Colocar o token no header para os restantes pedidos, para caso seja gerado um novo token a cada pedido
-    if (user && user.token != '') {
-      request = request.clone({
-        setHeaders: {
-          'x-access-token': user.token
-        }
-      });
-    }
+    // if (user && user.token != '') {
+    //   request = request.clone({
+    //     setHeaders: {
+    //       'x-access-token': user.token
+    //     }
+    //   });
+    // }
     return next.handle(request);
   }
 }
