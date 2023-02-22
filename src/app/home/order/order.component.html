@@ -1,131 +1,140 @@
 <div class="tw-gap-15">
+  <app-header [title]="headerTitle"></app-header>
 
-    <app-header [title]="headerTitle"></app-header>
-
+  <form [formGroup]="myForm">
     <div class="content tw-mt-10 tw-p-8">
-
-        <div class="sub-content">
-            <div class="col1 tw-flex tw-flex-col tw-gap-8">
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email Destinatário</label>
-                    <div class="input-group">
-                        <div class="input-group-text">@</div>
-                        <input [ngClass]="{'redBorder': isEmailEmpty}" type="email" class="form-control"
-                            id="autoSizingInputGroup" placeholder="example@gmail.com" [(ngModel)]="receiverEmail" />
-                    </div>
-                    <label class="errorMessage" *ngIf="isEmailEmpty">Por favor escolha um e-mail</label>
-                </div>
-
-                <div class="tw-flex tw-flex-col tw-gap-3">
-                    <label>
-                        Tamanho Cacifo
-                    </label>
-                    <div class="radioGroup tw-p-3 tw-gap-3 tw-flex tw-flex-col">
-                        <div class="form-check tw-py-1">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
-                                [(ngModel)]="lockerSize" value="S" checked>
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Pequeno 2€
-                            </label>
-                        </div>
-                        <div class="form-check tw-py-1">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                [(ngModel)]="lockerSize" value="M">
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Médio 4€
-                            </label>
-                        </div>
-                        <div class="form-check tw-py-1">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
-                                [(ngModel)]="lockerSize" value="L">
-                            <label class="form-check-label" for="flexRadioDefault3">
-                                Grande 8€
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="mb-3">
-                    <label for="firstName" class="form-label">Número de dias</label>
-                    <input type="number" class="form-control" id="numberOfDays" [ngClass]="{'redBorder': isDaysInvalid}"
-                        [(ngModel)]="numberOfDays" pattern="[0-9]+" min="0">
-                    <label class="errorMessage" *ngIf="isDaysInvalid">O número de dias não pode ser inferior
-                        a
-                        1</label>
-                </div>
+      <div class="sub-content">
+        <div class="col1 tw-flex tw-flex-col tw-gap-8">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Receiver Email</label>
+            <div class="input-group">
+              <div class="input-group-text">@</div>
+              <input [ngClass]="{ redBorder: isEmailEmpty }" type="email" class="form-control" id="autoSizingInputGroup"
+                placeholder="example@gmail.com" formControlName="receiverEmail" name="receiverEmail" />
             </div>
+            <label class="errorMessage"
+              *ngIf="myForm.get('receiverEmail')?.invalid && (myForm.get('receiverEmail')?.dirty || myForm.get('receiverEmail')?.touched)">Please
+              choose a valid Email</label>
+          </div>
 
-            <div class="col2 tw-flex tw-flex-col tw-gap-8">
-                <div class="lists tw-flex tw-flex-row ">
-
-                    <div class="list1 tw-flex tw-flex-col tw-gap-4">
-                        <label class="listTitle">Estação Origem</label>
-
-                        <div class="form-group-list1">
-                            <input type="text" class="search" placeholder="Search..." [(ngModel)]="searchTermList1">
-                        </div>
-
-                        <ul class="list-group">
-                            <li *ngFor="let item of items | filter:searchTermList1"
-                                class="list-group-item d-flex justify-content-between align-items-center tw-gap-3"
-                                [class.active]="item.selectedOrigin" (click)="selectItemOrigin(item)">
-
-                                <div class="listItem tw-flex tw-justify-between tw-w-full tw-py-1">
-                                    <label>{{ item.name }}</label>
-                                    <label class="lockersNumber">{{ item.freeLockers
-                                        }}</label>
-                                </div>
-
-                                <!-- Não ficou lá muito bem -->
-                                <!-- <svg *ngIf="item.selectedOrigin" xmlns="
-                                            http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="icon">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                </svg> -->
-                            </li>
-                            <label class="errorMessage" *ngIf="isOriginStationNotSelected">Por favor selecione uma
-                                estação</label>
-                        </ul>
-
-                    </div>
-
-                    <!-- -------------------------------------------- -->
-                    <div class="list2 tw-flex tw-flex-col tw-gap-4">
-                        <label class="listTitle">Estação Destino</label>
-
-                        <div class="form-group-list2">
-                            <input type="text" class="search" placeholder="Search..." [(ngModel)]="searchTermList2">
-                        </div>
-
-                        <ul class="list-group">
-                            <li *ngFor="let item of items | filter:searchTermList2"
-                                class="list-group-item d-flex justify-content-between align-items-center"
-                                [class.active]="item.selectDestination" (click)="selectItemDestination(item)">
-
-                                <div class="listItem tw-flex tw-justify-between tw-w-full tw-py-1">
-                                    <label>{{ item.name }}</label>
-                                    <label class="lockersNumber">{{ item.freeLockers
-                                        }}</label>
-                                </div>
-                            </li>
-                            <label class="errorMessage" *ngIf="isDestinationStationNotSelected">Por favor selecione uma
-                                estação</label>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="tw-flex tw-gap-3 tw-justify-center tw-items-center">
-                    <label class="priceLabel">Valor a pagar:</label>
-                    <label class="priceLabel price">{{price| currency: 'EUR': true: '1.2-2'}}</label>
-                    <label class="taxLabel">Iva Incluído</label>
-                </div>
+          <div class="tw-flex tw-flex-col tw-gap-3">
+            <label> Locker Size </label>
+            <div class="radioGroup tw-p-3 tw-gap-3 tw-flex tw-flex-col" (change)="onChangeSize()">
+              <div class="form-check tw-py-1">
+                <input class="form-check-input" type="radio" name="lockerSize" id="lockerSize1"
+                  formControlName="lockerSize" value="S" checked />
+                <label class="form-check-label" for="lockerSize1">
+                  Small {{ lockersPrice.S | currency : 'EUR' : true }}
+                </label>
+              </div>
+              <div class="form-check tw-py-1">
+                <input class="form-check-input" type="radio" name="lockerSize" id="lockerSize2"
+                  formControlName="lockerSize" value="M" />
+                <label class="form-check-label" for="lockerSize2">
+                  Medium {{ lockersPrice.M | currency : 'EUR' : true }}
+                </label>
+              </div>
+              <div class="form-check tw-py-1">
+                <input class="form-check-input" type="radio" name="lockerSize" id="lockerSize3"
+                  formControlName="lockerSize" value="L" />
+                <label class="form-check-label" for="lockerSize3">
+                  Large {{ lockersPrice.L | currency : 'EUR' : true }}
+                </label>
+              </div>
             </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="firstName" class="form-label">Number of days</label>
+            <input type="number" class="form-control" id="numberOfDays" [ngClass]="{ redBorder: isDaysInvalid }"
+              formControlName="numberOfDays" name="numberOfDays" pattern="[0-9]+" min="0" (change)="checkPrice()" />
+            <label class="errorMessage"
+              *ngIf="myForm.get('numberOfDays')?.invalid && (myForm.get('numberOfDays')?.dirty || myForm.get('numberOfDays')?.touched)">Days
+              number can't
+              be lower than 1</label>
+          </div>
         </div>
 
-        <div class="buttons tw-w-full tw-flex tw-justify-between tw-mt-5">
-            <button type="button" class="btn btn-danger">Cancelar</button>
-            <button type="button" class="btn btn-primary" (click)="confirmOrder()">Confirmar</button>
+        <div class="col2 tw-flex tw-flex-col tw-gap-8">
+          <div class="lists tw-flex tw-flex-row">
+            <div class="list1 tw-flex tw-flex-col tw-gap-4">
+              <label class="listTitle">Origin Station</label>
+
+              <div class="form-group-list1">
+                <input type="text" class="search" placeholder="Search..." name="searchTermList1"
+                  formControlName="searchTermList1" />
+              </div>
+
+              <div class="listHeader tw-flex tw-justify-between tw-items-center tw-px-2">
+                <div class="title">Name</div>
+                <div class="title">Free Lockers</div>
+              </div>
+
+              <ul class="list-group">
+                <li *ngFor="let station of stations | filter : myForm.value.searchTermList1"
+                  class="list-group-item d-flex justify-content-between align-items-center tw-gap-3"
+                  [ngClass]="station.freeLockers === 0 ? 'disabled' : ''"
+                  [class.active]="station.name === originStation" (click)="selectItemOrigin(station)">
+                  <div class="listItem tw-flex tw-justify-between tw-w-full tw-py-1">
+                    <label>{{ station.name }}</label>
+                    <label class="lockersNumber">{{ station.freeLockers }}</label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- -------------------------------------------- -->
+            <div class="list2 tw-flex tw-flex-col tw-gap-4">
+              <label class="listTitle">Destination Station</label>
+
+              <div class="form-group-list2">
+                <input type="text" class="search" placeholder="Search..." name="searchTermList2"
+                  formControlName="searchTermList2" />
+              </div>
+
+              <div class="listHeader tw-flex tw-justify-between tw-items-center tw-px-2">
+                <div class="title">Name</div>
+                <div class="title">Free Lockers</div>
+              </div>
+
+              <ul class="list-group">
+                <li *ngFor="let station of stations | filter : myForm.value.searchTermList2"
+                  class="list-group-item d-flex justify-content-between align-items-center"
+                  [ngClass]="station.freeLockers === 0 ? 'disabled' : ''"
+                  [class.active]="station.name === destinationStation" (click)="selectItemDestination(station)">
+                  <div class="listItem tw-flex tw-justify-between tw-w-full tw-py-1">
+                    <label>{{ station.name }}</label>
+                    <label class="lockersNumber">{{ station.freeLockers }}</label>
+                  </div>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+
+          <div class="tw-flex tw-gap-3 tw-justify-center tw-items-center">
+            <label class="priceLabel">Amount to pay:</label>
+            <label class="priceLabel price">{{
+              totalPrice | currency : 'EUR' : true : '1.2-2'
+              }}</label>
+            <label class="taxLabel">VAT Included</label>
+          </div>
         </div>
+      </div>
+
+      <div class="buttons tw-w-full tw-flex tw-justify-end tw-mt-5">
+        <div class="tw-flex tw-gap-3">
+          <button type="button" class="btn btn-outline-primary"
+            [disabled]="!myForm.valid || originStation === '' || destinationStation === '' || !canReserveOrder"
+            (click)="reserveLockers()">
+            Reserve Lockers
+          </button>
+          <button [disabled]="!canConfirmOrder" type="button" class="btn btn-primary" (click)="createOrder()">
+            Confirm Order
+          </button>
+        </div>
+      </div>
+
     </div>
+  </form>
 </div>

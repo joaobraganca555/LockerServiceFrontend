@@ -1,0 +1,26 @@
+.register {
+    /* height: 700px; */
+    margin-bottom: 50px;
+    background-color: #fff;
+    margin: 0 auto;
+    width: 50%;
+  }
+  
+  form {
+    margin: 20px 40px;
+  }
+  
+  
+  .background {
+    background-color: rgb(235, 234, 234);
+  }
+  
+  .errorMessage {
+    color: red;
+    font-size: 13px;
+    padding: 3px 3px;
+  }
+  
+  .redBorder {
+    border: 1px solid red;
+  }

@@ -1,1 +1,91 @@
-<p>addlocker works!</p>
+<div class="tw-gap-15">
+  <app-header [title]="headerTitle"></app-header>
+
+  <div class="content tw-mt-10 tw-p-8">
+    <div class="sub-content tw-flex tw-flex-col tw-gap-5">
+      <div class="actions">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Search..." />
+
+        <div>
+          <select class="form-select" [(ngModel)]="selectedValue" (ngModelChange)="updateStations()">
+            <option *ngFor="let value of stations" [value]="value.id">
+              {{ value.name }}
+            </option>
+          </select>
+        </div>
+
+        <button type="button" class="tw-flex tw-justify-center tw-items-center tw-gap-1 btn btn-secondary"
+          (click)="showAddLockerForm()">
+          <div class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </div>
+          New Locker
+        </button>
+      </div>
+
+      <div class="wrapper-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID Lockers</th>
+              <th>Size</th>
+              <th>Station Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let locker of lockersStation.lockers | filterTable:searchTerm">
+              <td>{{ locker.id }}</td>
+              <td>{{ locker.sizeName }}</td>
+              <td>{{ stationName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr *ngIf="isClicked" class="tw-my-10 tw-w-full">
+
+    <form [formGroup]="myForm">
+      <div *ngIf="isClicked" class="tw-flex tw-flex-col gap-5">
+        <div class="formRow tw-flex tw-justify-center tw-items-top gap-5">
+          <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <div class="mb-3">
+              <div class="input-group">
+                <input type="text" class="form-control" name="quantity" formControlName="quantity" required />
+              </div>
+              <label class="errorMessage" *ngIf="
+                  myForm.get('quantity')?.invalid &&
+                  (myForm.get('quantity')?.dirty ||
+                    myForm.get('quantity')?.touched)
+                ">
+                Quantity is required and must be greater than zero
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="S" id="S" formControlName="size" />
+              <label class="form-check-label" for="S"> Small Locker </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="M" id="M" formControlName="size" />
+              <label class="form-check-label" for="M"> Medium Locker </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="L" id="L" formControlName="size" />
+              <label class="form-check-label" for="L"> Large Locker </label>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="tw-w-6/12 tw-self-center btn btn-primary" (click)="addLocker()"
+          [disabled]="!myForm.valid">
+          Add
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>

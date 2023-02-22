@@ -1,22 +1,29 @@
 <div class="background tw-w-screen tw-h-screen tw-flex tw-justify-center tw-items-center">
   <div class="tw-flex tw-flex-col">
-    <div class="login tw-shadow-lg tw-flex tw-flex-col rounded">
+    <div class="register tw-shadow-lg tw-flex tw-flex-col rounded">
       <img src="assets/images/logo.png" alt="logo" width="70%" ref="" />
 
-      <form #myForm="ngForm">
+      <form [formGroup]="myForm">
         <div class="tw-flex tw-flex-row tw-gap-8">
           <div class="mb-3">
             <label for="firstName" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="firstName" required />
-            <div *ngIf="myForm.controls['firstName'].touched && myForm.controls['firstName'].invalid">
+            <input type="text" class="form-control" id="firstName" name="firstName" formControlName="firstName"
+              required />
+            <div *ngIf="
+                myForm.controls['firstName']?.touched &&
+                myForm.controls['firstName']?.invalid
+              ">
               <label class="errorMessage" *ngIf="myForm.controls['firstName'].errors?.['required']">First name is
                 required</label>
             </div>
           </div>
           <div class="mb-3">
             <label for="lastName" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="lastName" required />
-            <div *ngIf="myForm.controls['lastName'].touched && myForm.controls['lastName'].invalid">
+            <input type="text" class="form-control" id="lastName" name="lastName" formControlName="lastName" required />
+            <div *ngIf="
+                myForm.controls['lastName']?.touched &&
+                myForm.controls['lastName']?.invalid
+              ">
               <label class="errorMessage" *ngIf="myForm.controls['lastName'].errors?.['required']">Last name is
                 required</label>
             </div>
@@ -27,57 +34,80 @@
           <label for="exampleInputEmail1" class="form-label">Email</label>
           <div class="input-group">
             <div class="input-group-text">@</div>
-            <input type="email" class="form-control" id="email" name="email" [(ngModel)]="email" required
+            <input type="email" class="form-control" id="email" name="email" formControlName="email" required
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
           </div>
-          <div *ngIf="myForm.controls['email'].touched && myForm.controls['email'].invalid">
-            <label class="errorMessage" *ngIf="myForm.controls['email'].errors?.['required']">Email is
-              required</label>
-            <label class="errorMessage" *ngIf="myForm.controls['email'].errors?.['email']">Email is invalid</label>
+          <div *ngIf="
+              myForm.controls['email']?.touched &&
+              myForm.controls['email']?.invalid
+            ">
+            <label class="errorMessage" *ngIf="myForm.controls['email'].errors?.['required']">Email is required</label>
             <label class="errorMessage" *ngIf="myForm.controls['email'].errors?.['pattern']">Please enter a valid email
-              address.</label>
+              address</label>
           </div>
         </div>
 
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" id="username" name="username" [(ngModel)]="username" required />
-          <div *ngIf="myForm.controls['username'].touched && myForm.controls['username'].invalid">
+          <input type="text" class="form-control" id="username" name="username" formControlName="username" required />
+          <div *ngIf="
+              myForm.controls['username']?.touched &&
+              myForm.controls['username']?.invalid
+            ">
             <label class="errorMessage" *ngIf="myForm.controls['username'].errors?.['required']">Username is
               required</label>
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" name="password1" [(ngModel)]="password"
-            required minlength="6" />
-          <div *ngIf="myForm.controls['password1'].touched && myForm.controls['password1'].invalid">
-            <label class="errorMessage" *ngIf="myForm.controls['password1'].errors?.['required']">Password is
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" name="password" formControlName="password" required
+            minlength="6" />
+          <div *ngIf="
+              myForm.controls['password']?.touched &&
+              myForm.controls['password']?.invalid
+            ">
+            <label class="errorMessage" *ngIf="myForm.controls['password'].errors?.['required']">Password is
               required</label>
-            <label class="errorMessage" *ngIf=" myForm.controls['password1'].errors?.['minlength']">
+            <label class="errorMessage" *ngIf="myForm.controls['password'].errors?.['minlength']">
               Password must be at least 6 characters long.
             </label>
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="exampleInputPassword2" class="form-label">Password Confirmation</label>
-          <input type="password" class="form-control" id="exampleInputPassword2" name="password2"
-            [(ngModel)]="confirmPassword" required minlength="6" />
-          <div *ngIf="myForm.controls['password2'].touched && myForm.controls['password2'].invalid">
-            <label class="errorMessage" *ngIf="myForm.controls['password2'].errors?.['required']">Password Confirmation
+          <label class="form-label">Password Confirmation</label>
+          <input type="password" class="form-control" name="confirmPassword" formControlName="confirmPassword" required
+            minlength="6" (keydown.enter)="register()" />
+          <div *ngIf="
+              myForm.controls['confirmPassword']?.touched &&
+              myForm.controls['confirmPassword']?.invalid
+            ">
+            <label class="errorMessage" *ngIf="myForm.controls['confirmPassword'].errors?.['required']">Password
+              Confirmation
               is required</label>
-            <label class="errorMessage" *ngIf=" myForm.controls['password2'].errors?.['minlength']">
+            <label class="errorMessage" *ngIf="myForm.controls['confirmPassword'].errors?.['minlength']">
               Password must be at least 6 characters long.
             </label>
           </div>
-          <label class="errorMessage" *ngIf="passwordError">{{passwordErrorText}}</label>
+          <label class="errorMessage" *ngIf="passwordError">{{
+            passwordErrorText
+            }}</label>
         </div>
 
-        <div class="tw-flex tw-justify-end">
-          <button type="button" class="btn btn-primary" (click)="register()"
-            [disabled]="!myForm.valid">Register</button>
+        <div class="mb-3">
+          <label class="errorMessage" *ngIf="failedToRegister">{{
+            pd.detail
+            }}</label>
+        </div>
+
+        <div class="tw-flex tw-my-6 tw-justify-between">
+          <button type="button" class="btn btn-outline-primary" (click)="redirect('')">
+            Go Back
+          </button>
+          <button type="button" class="btn btn-primary" (click)="register()" [disabled]="!myForm.valid">
+            Register
+          </button>
         </div>
       </form>
     </div>

@@ -1,1 +1,33 @@
-<p>hold-order works!</p>
+<div class="tw-gap-15">
+    <app-header [title]="headerTitle"></app-header>
+  
+    <div class="content tw-mt-10 tw-p-8">
+      <div class="sub-content tw-flex tw-flex-col tw-gap-5">
+        <div class="actions">
+          <input type="text" [(ngModel)]="searchTerm" placeholder="Search..." />
+        </div>
+        <div class="wrapper-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID Lockers</th>
+                <th>Receiver</th>
+                <th>Delayed days</th>
+                <th>Station</th>
+                <th class="text-center">retain order</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let orderR of orderRetain | filterTableRetain:searchTerm" (click)="onOrderClick(orderR.id)">
+                <td>{{ orderR.destinationLockerId }}</td>
+                <td>{{ orderR.receiverEmail }}</td>
+                <td>{{ orderR.collectDays }}</td>
+                <td>{{ orderR.stationName }}</td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-success d-flex justify-content-center align-items-center btn-md w-100">Collect</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>

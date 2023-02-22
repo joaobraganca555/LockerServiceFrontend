@@ -20,7 +20,6 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-
     // Caso seja o login, lidar com o response para definir o header
     if (request.url === `${environment.gatewayBaseUrl}/auth/login`) {
       return next.handle(request).pipe(
@@ -42,7 +41,7 @@ export class JwtInterceptor implements HttpInterceptor {
                 exp: decodedToken.exp,
                 token
               };
-              this.authService.setUser(user);
+              localStorage.setItem('user', JSON.stringify(user));
             }
           }
           return event;
@@ -50,14 +49,15 @@ export class JwtInterceptor implements HttpInterceptor {
       );
     }
 
-    //Colocar o token no header para os restantes pedidos, para caso seja gerado um novo token a cada pedido
-    // if (user && user.token != '') {
-    //   request = request.clone({
-    //     setHeaders: {
-    //       'x-access-token': user.token
-    //     }
-    //   });
-    // }
+    const user = this.authService.getUser();
+
+    if (user && user.token != '') {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${user.token}`
+        }
+      });
+    }
     return next.handle(request);
   }
 }

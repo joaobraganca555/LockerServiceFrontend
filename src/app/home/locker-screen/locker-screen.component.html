@@ -1,0 +1,93 @@
+<div class="container">
+
+  <div *ngIf="failedToGetLockerInfo; else elseBlock">Some error ocurred while getting data from the locker.</div>
+  <ng-template #elseBlock>
+    <div class="tw-flex tw-flex-col tw-gap-5">
+      <div class="locker-info col-12 col-md-6 offset-md-3 tw-flex tw-justify-between">
+        <div class="tw-flex tw-flex-col tw-justify-start">
+          <div class="tw-flex tw-items-center tw-gap-4">
+            <label class="title">Locker ID:</label>
+            <label>{{ locker?.id }}</label>
+          </div>
+          <div class="tw-flex tw-items-center tw-gap-4">
+            <label class="title">Status:</label>
+            <label>{{ locker?.status }}</label>
+          </div>
+          <div class="tw-flex tw-items-center tw-gap-4">
+            <label class="title">Size:</label>
+            <label>{{ locker?.size?.name }}</label>
+          </div>
+        </div>
+
+        <div class="tw-flex tw-flex-col tw-justify-center">
+          <div class="colorBlock" [ngClass]="{ red: locker?.isClosed, green: !locker?.isClosed }">
+            <label>{{ locker?.isClosed ? 'Closed' : 'Open' }}</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 offset-md-3">
+        <!-- Monitor para exibir o número digitado -->
+        <div class="monitor">
+          {{ displayValue }}
+        </div>
+
+        <!-- Teclado numérico -->
+        <div class="keyboard">
+          <div class="row">
+            <div class="col-4">
+              <button class="key" (click)="onKeyPress('1')">1</button>
+            </div>
+            <div class="col-4">
+              <button class="key" (click)="onKeyPress('2')">2</button>
+            </div>
+            <div class="col-4">
+              <button class="key" (click)="onKeyPress('3')">3</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <button class="key" (click)="onKeyPress('4')">4</button>
+            </div>
+            <div class="col-4">
+              <button class="key" (click)="onKeyPress('5')">5</button>
+            </div>
+            <div class="col-4">
+              <button class="key" (click)="onKeyPress('6')">6</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <button class="key" (click)="onKeyPress('7')">7</button>
+            </div>
+            <div class="col-4">
+              <button class="key" (click)="onKeyPress('8')">8</button>
+            </div>
+            <div class="col-4">
+              <button class="key" (click)="onKeyPress('9')">9</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <button class="key" (click)="clear()">C</button>
+            </div>
+            <div class="col-4">
+              <button class="key" (click)="onKeyPress('0')">0</button>
+            </div>
+            <div class="col-4">
+              <button class="key" (click)="clearLastEntry()">←</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="tw-flex col-12 tw-gap-1">
+              <button class="key close" (click)="onCloseLocker()">Close</button>
+              <button class="key enter" (click)="submit()">Enter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+
+</div>

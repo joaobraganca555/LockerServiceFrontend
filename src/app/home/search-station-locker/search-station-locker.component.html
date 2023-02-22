@@ -1,1 +1,98 @@
-<p>search-station-locker works!</p>
+<div class="tw-gap-15">
+    <app-header [title]="headerTitle"></app-header>
+
+    <div class="content tw-mt-10 tw-p-8">
+        <div>
+            <div class="list1 tw-flex tw-flex-col tw-gap-4">
+                <label class="listTitle">Station</label>
+
+                <div class="form-group-list1">
+                    <input type="text" class="search" placeholder="Search..." [(ngModel)]="searchTermList" />
+                </div>
+
+                <ul class="list-group">
+                    <li *ngFor="let station of stations | filter : searchTermList"
+                        class="list-group-item d-flex justify-content-between align-items-center"
+                        [class.active]="station.name === selectedStation" (click)="selectStation(station)">
+                        <div class="listItem tw-w-full tw-py-1">
+                            <label>{{ station.name }}</label>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="sub-content tw-flex tw-flex-col gap-md-5">
+            <div>
+                <div class="tw-flex tw-items-center tw-gap-2">
+                    <label class="tw-p-3 title">{{selectedStation}}</label>
+                    <div class="icon"
+                        (click)="getLockersByStation(stations[findStationIndexByName(selectedStation)].id)">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="bigBox">
+                    <div *ngIf="lockers.length === 0; else elseBlock" class="noContent">
+                        There is no lockers in this station!
+                    </div>
+                    <ng-template #elseBlock>
+                        <div *ngFor="let locker of lockers" class="box"
+                            [ngClass]="[locker.sizeName === 'S' ? 'sizeS' : '',  locker.sizeName === 'M' ? 'sizeM' : '', locker.sizeName === 'L' ? 'sizeL' : '', locker.free ? 'green' :  'red']">
+                            <div class="tw-flex tw-items-center tw-gap-4">
+                                <label class="title">ID:</label>
+                                <label>{{ locker.id }}</label>
+                            </div>
+                            <div class="tw-flex tw-items-center tw-gap-4">
+                                <label class="title">Size:</label>
+                                <label>{{ locker.sizeName }}</label>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="data tw-flex tw-justify-around">
+                <div>
+                    <label class="titleGreen">
+                        Free Lockers
+                    </label>
+                    <div class="tw-flex tw-flex-col tw-p-2 tw-gap-2">
+                        <div class="tw-flex tw-justify-between">
+                            <label class="title">Small: </label>
+                            <label class="count">{{ countBySizeNameAndState('S', true)}}</label>
+                        </div>
+                        <div class="tw-flex tw-justify-between">
+                            <label class="title">Medium: </label>
+                            <label class="count">{{ countBySizeNameAndState('M', true)}}</label>
+                        </div>
+                        <div class="tw-flex tw-justify-between">
+                            <label class="title">Large: </label>
+                            <label class="count">{{ countBySizeNameAndState('L', true)}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="titleRed">
+                        Occupied Lockers
+                    </label>
+                    <div class="tw-flex tw-flex-col tw-p-2 tw-gap-2">
+                        <div class="tw-flex tw-justify-between">
+                            <label class="title">Small: </label>
+                            <label class="count">{{ countBySizeNameAndState('S', false)}}</label>
+                        </div>
+                        <div class="tw-flex tw-justify-between">
+                            <label class="title">Medium: </label>
+                            <label class="count">{{ countBySizeNameAndState('M', false)}}</label>
+                        </div>
+                        <div class="tw-flex tw-justify-between">
+                            <label class="title">Large: </label>
+                            <label class="count">{{ countBySizeNameAndState('L', false)}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

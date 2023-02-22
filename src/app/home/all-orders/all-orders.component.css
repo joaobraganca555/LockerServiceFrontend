@@ -1,0 +1,17 @@
+svg {
+  width: 24px;
+  margin-right: 10px;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  border: solid 1px lightgray;
+  gap: 100px;
+}
+
+table {
+  border: solid 1px lightgray;
+}

@@ -83,4 +83,31 @@ export class AlertService {
       timer: 3000
     });
   }
+
+  showErrorToast(message: string) {
+    Swal.fire({
+      toast: true,
+      position: 'top',
+      icon: 'error',
+      title: message,
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
+
+  showSuccessAlertWithButtons(
+    title: string,
+    html: string,
+    confirmButtonText: string,
+    cancelButtonText: string
+  ) {
+    return Swal.fire({
+      title: title,
+      html: html,
+      icon: 'success',
+      showCancelButton: true,
+      confirmButtonText: confirmButtonText,
+      cancelButtonText: cancelButtonText
+    });
+  }
 }

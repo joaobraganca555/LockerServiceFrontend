@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/core/services/alerts/alert.service';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { ProblemDetail } from 'src/app/models/problemDetail.model';
 import { RegisterUser } from 'src/app/models/registerUser.model';
 
 @Component({
@@ -12,15 +13,10 @@ import { RegisterUser } from 'src/app/models/registerUser.model';
 })
 export class RegisterComponent {
   myForm: FormGroup;
-
-  firstName = '';
-  lastName = '';
-  email = '';
-  username = '';
-  password = '';
-  confirmPassword = '';
   passwordError = false;
   passwordErrorText = '';
+  failedToRegister = false;
+  pd: ProblemDetail = new ProblemDetail();
 
   constructor(
     private fb: FormBuilder,
@@ -33,35 +29,43 @@ export class RegisterComponent {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       username: ['', Validators.required],
-      password1: ['', Validators.required],
-      password2: ['', Validators.required]
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required]
     });
   }
 
+  redirect(pageName: string) {
+    this.router.navigate([`${pageName}`]);
+  }
+
   register() {
-    if (this.password !== this.confirmPassword) {
+    if (this.myForm.value.password !== this.myForm.value.confirmPassword) {
       this.passwordError = true;
       this.passwordErrorText = 'Passwords does not match';
       return;
     }
+    this.passwordError = false;
 
     const newUser = new RegisterUser(
-      this.firstName,
-      this.lastName,
-      this.email,
-      this.username,
-      this.password,
-      this.confirmPassword
+      this.myForm.value.firstName,
+      this.myForm.value.lastName,
+      this.myForm.value.email,
+      this.myForm.value.username,
+      this.myForm.value.password,
+      this.myForm.value.confirmPassword
     );
 
     this.authService.register(newUser).subscribe({
       next: (data) => {
         if (data) {
           this.alert.showSuccessToast('Registration successfully');
-          this.router.navigate(['']);
+          this.redirect('');
         }
+      },
+      error: (error) => {
+        this.pd = error.error;
+        this.failedToRegister = true;
       }
-      // error: () => {}
     });
   }
 }

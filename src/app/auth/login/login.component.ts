@@ -39,4 +39,10 @@ export class LoginComponent {
       });
     }
   }
+
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'enter') {
+      this.login();
+    }
+  }
 }

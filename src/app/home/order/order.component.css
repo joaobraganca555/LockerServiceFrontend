@@ -68,6 +68,19 @@
   gap: 100px;
 }
 
+.list1 {
+  width: 400px;
+}
+
+.list-group {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.list2 {
+  width: 400px;
+}
+
 .listItem {
   gap: 90px;
 }
@@ -84,4 +97,32 @@
 
 .redBorder {
   border: 1px solid red;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.listHeader {
+  border: 1px solid lightgray;
+}
+
+@media (max-width: 1300px) {
+  .lists {
+    display: flex;
+    flex-direction: column;
+  }
+  .sub-content {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 50px;
+  }
+}
+
+.disabled {
+  color: #aba9a9;
+  pointer-events: none;
 }

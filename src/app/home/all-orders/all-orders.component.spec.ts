@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddlockerComponent } from './addlocker.component';
+import { AllOrdersComponent } from './all-orders.component';
 
-describe('AddlockerComponent', () => {
-  let component: AddlockerComponent;
-  let fixture: ComponentFixture<AddlockerComponent>;
+describe('AllOrdersComponent', () => {
+  let component: AllOrdersComponent;
+  let fixture: ComponentFixture<AllOrdersComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddlockerComponent ]
+      declarations: [ AllOrdersComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddlockerComponent);
+    fixture = TestBed.createComponent(AllOrdersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

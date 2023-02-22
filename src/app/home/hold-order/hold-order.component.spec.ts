@@ -8,9 +8,8 @@ describe('HoldOrderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HoldOrderComponent ]
-    })
-    .compileComponents();
+      declarations: [HoldOrderComponent]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HoldOrderComponent);
     component = fixture.componentInstance;

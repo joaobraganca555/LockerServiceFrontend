@@ -1,1 +1,65 @@
-<p>account works!</p>
+<app-header [title]="headerTitle"></app-header>
+
+<div class="content tw-mt-10 tw-p-8">
+  <div class="tw-flex tw-flex-col">
+    <div class="register tw-flex tw-flex-col rounded">
+      <form [formGroup]="myForm">
+        <div class="tw-flex tw-flex-row tw-gap-8">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" formControlName="firstName"
+              [readonly]="!editMode" required />
+            <div *ngIf="myForm.controls['firstName']?.touched && myForm.controls['firstName'].invalid">
+              <label class="errorMessage" *ngIf="myForm.controls['firstName'].errors?.['required']">First name is
+                required</label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" formControlName="lastName"
+              [readonly]="!editMode" required />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email</label>
+          <div class="input-group">
+            <div class="input-group-text">@</div>
+            <input type="email" class="form-control" id="email" name="email" formControlName="email"
+              [readonly]="!editMode" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
+          </div>
+          <div *ngIf="myForm.controls['email']?.touched && myForm.controls['email'].invalid">
+            <label class="errorMessage" *ngIf="myForm.controls['email'].errors?.['required']">Email is
+              required</label>
+            <label class="errorMessage" *ngIf="myForm.controls['email'].errors?.['email']">Email is invalid</label>
+            <label class="errorMessage" *ngIf="myForm.controls['email'].errors?.['pattern']">Please enter a valid email
+              address.</label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" formControlName="username"
+            [readonly]="!editMode" required />
+          <div *ngIf="myForm.controls['username']?.touched && myForm.controls['username'].invalid">
+            <label class="errorMessage" *ngIf="myForm.controls['username'].errors?.['required']">Username is
+              required</label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="errorMessage" *ngIf="failedToRegister">{{pd.detail}}</label>
+        </div>
+
+        <div class="tw-flex tw-my-6 tw-gap-3">
+          <button *ngIf="editMode === false" type="button" class="btn btn-primary" (click)="editMode = true"
+            [disabled]="editMode && !myForm.valid">Edit
+            Account</button>
+          <button *ngIf="editMode === true" class="button" class="btn btn-outline-primary" (click)="editAccount()"
+            [disabled]="editMode && !myForm.valid">Save Changes
+          </button>
+          <button type="button" class="btn btn-danger">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,24 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 import { Router } from '@angular/router';
+import { AlertService } from 'src/app/core/services/alerts/alert.service';
+import { OrderService } from 'src/app/core/services/order/order.service';
+import { StationService } from 'src/app/core/services/station/station.service';
+import { ILockersPrice } from 'src/app/models/lockersPrice.interface';
+import { Order } from 'src/app/models/order.model';
+import { RequestPending } from 'src/app/models/requestPending.model';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.css']
 })
-export class OrderComponent {
+export class OrderComponent implements OnInit {
   // Inputs
-  headerTitle = 'Encomendas';
+  headerTitle = 'Orders';
 
   // Variables
-  searchTermList1 = '';
-  searchTermList2 = '';
+  myForm: FormGroup;
+  stations: any[] = [];
+  lockersPrice: ILockersPrice = {
+    S: 1,
+    M: 2,
+    L: 3
+  };
+  totalPrice = 0;
+  canConfirmOrder = false;
+  canReserveOrder = true;
   originStation = '';
   destinationStation = '';
-  price = 4.0;
-  numberOfDays = 0;
-  lockerSize = 'S';
-  receiverEmail = '';
+  originStationId = 0;
+  destinationStationId = 0;
+
+  originLockerId = 0;
+  destinationLockerId = 0;
 
   // Errors
   isEmailEmpty = false;
@@ -26,91 +47,186 @@ export class OrderComponent {
   isOriginStationNotSelected = false;
   isDestinationStationNotSelected = false;
 
-  items = [
-    {
-      name: 'Felgueiras',
-      selectedOrigin: false,
-      selectDestination: false,
-      freeLockers: 5
-    },
-    {
-      name: 'Porto',
-      selectedOrigin: false,
-      selectDestination: false,
-      freeLockers: 6
-    },
-    {
-      name: 'Braga',
-      selectedOrigin: false,
-      selectDestination: false,
-      freeLockers: 3
-    },
-    {
-      name: 'Lisboa',
-      selectedOrigin: false,
-      selectDestination: false,
-      freeLockers: 1
-    },
-    {
-      name: 'Póvoa de Varzim',
-      selectedOrigin: false,
-      selectDestination: false,
-      freeLockers: 1
-    },
-    {
-      name: 'Póvoa de Varzim Póvoa de Varzim',
-      selectedOrigin: false,
-      selectDestination: false,
-      freeLockers: 1
-    }
-  ];
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private stationService: StationService,
+    private alertService: AlertService,
+    private orderService: OrderService
+  ) {
+    this.myForm = fb.group({
+      numberOfDays: [0, [Validators.required, this.validateNumberOfDays]],
+      receiverEmail: ['', [Validators.required, Validators.email]],
+      lockerSize: ['S', Validators.required],
+      searchTermList1: [''],
+      searchTermList2: ['']
+    });
+  }
 
-  constructor(private router: Router) {}
+  ngOnInit(): void {
+    this.getFreeLockersByStation(this.myForm.value.lockerSize);
+  }
+
+  getFreeLockersByStation(size: string) {
+    this.stationService.getStationsFreeLockersBySize(size).subscribe({
+      next: (data) => {
+        if (data) {
+          this.stations = data;
+        }
+      },
+      error: (data) => {
+        this.alertService.showErrorToast(data.error.statusText);
+      }
+    });
+  }
 
   redirect(pageName: string) {
     this.router.navigate([`${pageName}`]);
   }
 
-  selectItemOrigin(item: any) {
-    this.items.forEach((i) => (i.selectedOrigin = false));
-    item.selectedOrigin = true;
-    this.originStation = item.name;
-    console.log(this.originStation);
+  selectItemOrigin(station: any) {
+    this.originStation = station.name;
   }
 
-  selectItemDestination(item: any) {
-    this.items.forEach((i) => (i.selectDestination = false));
-    item.selectDestination = true;
-    this.destinationStation = item.name;
-    console.log(this.destinationStation);
+  selectItemDestination(station: any) {
+    this.destinationStation = station.name;
   }
 
-  confirmOrder() {
-    if (this.numberOfDays < 1) {
-      this.isDaysInvalid = true;
+  onChangeSize() {
+    this.getFreeLockersByStation(this.myForm.value.lockerSize);
+    this.checkPrice();
+  }
+
+  reserveLockers() {
+    if (this.originStation != '' && this.destinationStation != '') {
+      this.originStationId = this.findStationIdByName(this.originStation);
+      this.destinationStationId = this.findStationIdByName(
+        this.destinationStation
+      );
+      const requestPending: RequestPending = new RequestPending(
+        this.originStationId,
+        this.destinationStationId,
+        this.myForm.value.lockerSize
+      );
+
+      this.orderService.requestPendingLockers(requestPending).subscribe({
+        next: (data) => {
+          if (data) {
+            this.originLockerId = data.originLockerId;
+            this.destinationLockerId = data.destinationLockerId;
+
+            this.alertService.showSuccessToast(
+              'Lockers were successfully reserved!'
+            );
+            this.canReserveOrder = false;
+            this.canConfirmOrder = true;
+          }
+        },
+        error: (data) => {
+          console.error(data);
+          if (data.error.detail) {
+            this.alertService.showErrorToast(data.error.detail);
+          } else {
+            this.alertService.showErrorToast(
+              'Error while reserving your lockers'
+            );
+          }
+        }
+      });
     } else {
-      this.isDaysInvalid = false;
-    }
-    if (this.receiverEmail === '') {
-      this.isEmailEmpty = true;
-    } else {
-      this.isEmailEmpty = false;
-    }
-    if (this.originStation === '') {
-      this.isOriginStationNotSelected = true;
-    } else {
-      this.isOriginStationNotSelected = false;
-    }
-    if (this.destinationStation === '') {
-      this.isDestinationStationNotSelected = true;
-    } else {
-      this.isDestinationStationNotSelected = false;
+      this.alertService.showWarningToast('Do you have stations selected?');
     }
   }
 
-  change() {
-    console.log(this.lockerSize);
+  createOrder() {
+    const order: Order = new Order(
+      this.myForm.value.receiverEmail,
+      this.originLockerId,
+      this.destinationLockerId,
+      this.myForm.value.numberOfDays
+    );
+    this.orderService.createOrder(order).subscribe({
+      next: (data) => {
+        if (data) {
+          console.log('Create Order', data);
+
+          this.alertService
+            .showConfirmationAlert(
+              'Order Confirmed! ',
+              `Total amount: ${this.totalPrice.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'EUR'
+              })}`,
+              'Confirm Payment',
+              'Cancel'
+            )
+            .then((result) => {
+              if (result.isConfirmed) {
+                this.orderService.payOrder(data.id).subscribe({
+                  next: (data) => {
+                    if (data) {
+                      this.alertService
+                        .showSuccessAlertWithButtons(
+                          'Thank for your order!',
+                          `<p>Order confirmed and payment completed!</p> Order ID: <strong>${this.originLockerId}</strong>, PIN: <strong>${data.pin}</strong>`,
+                          'Go To Locker Screen',
+                          'Ok'
+                        )
+                        .then((result) => {
+                          if (result.isConfirmed) {
+                            this.router.navigate([
+                              `lockerScreen/${this.originLockerId}`
+                            ]);
+                          } else {
+                            this.router.navigate([`home`]);
+                          }
+                        });
+                    }
+                  },
+                  error: (data) => {
+                    console.error(data);
+                    this.alertService.showErrorToast('Payment Failed!');
+                  }
+                });
+              } else if (result.isDismissed) {
+                this.alertService.showWarningToast(
+                  'Your order is pending payment!'
+                );
+              }
+            });
+        }
+      },
+      error: (data) => {
+        console.error(data);
+        this.alertService.showErrorToast(
+          'Some error ocurred while creating your order!'
+        );
+      }
+    });
   }
 
-  // TODO: create item/station model and replace the any
+  findStationIdByName(stationName: string): number {
+    return this.stations[
+      this.stations.findIndex((station) => station.name === stationName)
+    ].id;
+  }
+
+  checkPrice() {
+    this.totalPrice =
+      this.lockersPrice[this.myForm.value.lockerSize] *
+      this.myForm.value.numberOfDays;
+  }
+
+  isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  validateNumberOfDays(control: AbstractControl) {
+    const value = control.value;
+    if (value <= 0) {
+      return { invalidNumberOfDays: true };
+    }
+    return null;
+  }
 }

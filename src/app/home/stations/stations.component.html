@@ -4,37 +4,143 @@
 
     <div class="content tw-mt-10 tw-p-8">
 
-        <div class="sub-content">
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Pais</th>
-                        <th scope="col">Cidade</th>
-                        <th scope="col">Código Postal</th>
-                        <th scope="col">Código Endereço</th>
-                        <th scope="col">Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- <tr *ngFor="">
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr> -->
-                </tbody>
-            </table>
+        <div class="sub-content tw-flex tw-flex-col tw-gap-5">
+            <div class="actions">
+                <div class="search">
+                    <input type="text" class="search" placeholder="Search..." [(ngModel)]="searchTerm">
+                </div>
+                <button type="button" class="tw-flex tw-justify-center tw-items-center tw-gap-1 btn btn-secondary"
+                    (click)="open()">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                    </div>
+                    New Station
+                </button>
+            </div>
+            <div class="wrapper-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Country</th>
+                            <th scope="col">City</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Zip Code</th>
+                            <th scope="col">Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let station of stations | filterTable:searchTerm">
+                            <th scope="row">{{ station.id }}</th>
+                            <td>{{ station.name }}</td>
+                            <td>{{ station.location.country }}</td>
+                            <td>{{ station.location.city }}</td>
+                            <td>{{ station.location.address }}</td>
+                            <td>{{ station.location.zipCode }}</td>
+                            <td>{{ station.createdAt | date:'dd/MM/yyyy' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="buttons tw-w-full tw-flex tw-justify-between tw-mt-5">
-            <button type="button" class="btn btn-danger">Cancelar</button>
-            <button type="button" class="btn btn-primary">Confirmar</button>
-        </div>
+        <hr *ngIf="isClicked" class="tw-my-10 tw-w-full">
+
+        <form [formGroup]="myForm">
+            <div *ngIf="isClicked" class="tw-flex tw-flex-col gap-5">
+                <div class="formRow tw-flex tw-justify-center tw-items-center gap-5">
+                    <div class="mb-3">
+                        <label class="form-label">Station Name</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="stationName" formControlName="stationName"
+                                required />
+                        </div>
+                        <label class="errorMessage"
+                            *ngIf="myForm.get('stationName')?.invalid && (myForm.get('stationName')?.dirty || myForm.get('stationName')?.touched)">
+                            Station Name is required.
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">City</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="city" formControlName="city" required />
+                        </div>
+                        <label class="errorMessage"
+                            *ngIf="myForm.get('city')?.invalid && (myForm.get('city')?.dirty || myForm.get('city')?.touched)">
+                            City is required.
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Zip Code</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="zipCode" formControlName="zipCode" required />
+                        </div>
+                        <label class="errorMessage"
+                            *ngIf="myForm.get('zipCode')?.invalid && (myForm.get('zipCode')?.dirty || myForm.get('zipCode')?.touched)">
+                            Zip Code is required and must be valid.
+                        </label>
+                    </div>
+                </div>
+
+                <div class="formRow tw-flex tw-justify-center tw-items-top gap-5">
+                    <div class="mb-3">
+                        <label class="form-label">Country</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="country" formControlName="country" required />
+                        </div>
+                        <label class="errorMessage"
+                            *ngIf="myForm.get('country')?.invalid && (myForm.get('country')?.dirty || myForm.get('country')?.touched)">
+                            Country is required.
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="address" formControlName="address" required />
+                        </div>
+                        <label class="errorMessage"
+                            *ngIf="myForm.get('address')?.invalid && (myForm.get('address')?.dirty || myForm.get('address')?.touched)">
+                            Address is required.
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Quantities</label>
+                        <div class="tw-flex tw-flex-col border tw-p-2 tw-gap-3">
+                            <div class="form-group">
+                                <label class="font" for="small-locker-input">Small Locker</label>
+                                <input type="number" class="form-control" id="small-locker-input" name="small-locker"
+                                    formControlName="smallLocker" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="font" for="medium-locker-input">Medium Locker</label>
+                                <input type="number" class="form-control" id="medium-locker-input" name="medium-locker"
+                                    formControlName="mediumLocker" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="font" for="large-locker-input">Large Locker</label>
+                                <input type="number" class="form-control" id="large-locker-input" name="large-locker"
+                                    formControlName="largeLocker" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tw-flex tw-flex-col tw-gap-2 tw-self-center">
+                    <label *ngIf="failedToCreateStation" class="errorMessage">{{pd.detail}}</label>
+                    <button type="button" class="tw-w-6/12 tw-self-center btn btn-primary" (click)="addStation()"
+                        [disabled]="!myForm.valid">Add</button>
+                </div>
+            </div>
+        </form>
+
     </div>
+
 </div>

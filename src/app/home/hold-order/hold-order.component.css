@@ -1,0 +1,53 @@
+html {
+    scroll-behavior: smooth;
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: solid 1px lightgray;
+  }
+  
+  .sub-content {
+    width: 80%;
+    height: 425px; /* Set a default height */
+  }
+  
+  .wrapper-table {
+    overflow-x: auto;
+    overflow-y: scroll; /* Add vertical scroll if necessary */
+  }
+  
+  .icon {
+    width: 25px;
+  }
+  
+  .table {
+    border: solid 1px lightgray;
+    width: 100%;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  @media (max-width: 700px) {
+    .actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+  }
+  
+  .errorMessage {
+    color: red;
+    font-size: 13px;
+    padding: 3px 3px;
+  }
+  

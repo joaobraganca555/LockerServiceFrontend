@@ -1,0 +1,154 @@
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  border: solid 1px lightgray;
+  gap: 100px;
+}
+
+.list1 {
+  width: 400px;
+}
+
+.list-group {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.search {
+  width: 100%;
+}
+
+.listTitle {
+  padding: 4px;
+  font-weight: bold;
+  border: 1px solid rgb(180, 179, 179);
+  border-radius: 5px;
+  background-color: rgb(245, 244, 244);
+}
+
+.listItem {
+  gap: 90px;
+}
+
+.bigBox {
+  display: flex;
+  flex-wrap: wrap;
+  /* width: 1000px; */
+  justify-content: space-around;
+  max-width: 800px;
+  /* width: 800px; */
+  height: 400px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: rgb(238, 238, 238);
+  border-radius: 20px;
+  gap: 10px;
+  padding: 15px;
+  /* flex-shrink: 1; */
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  flex-grow: 1;
+  border-radius: 5px;
+}
+
+.red {
+  background-color: rgb(222, 54, 54);
+}
+
+.green {
+  background-color: rgb(35, 152, 35);
+}
+
+.title {
+  font-weight: bold;
+}
+
+.noContent {
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 200px;
+}
+
+.sizeS {
+  order: 1;
+  width: 100px;
+  height: 100px;
+}
+
+.sizeM {
+  order: 2;
+  width: 150px;
+  height: 100px;
+}
+
+.sizeL {
+  order: 3;
+  width: 200px;
+  height: 100px;
+}
+
+@media (max-width: 1000px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .sub-content {
+    gap: 50px;
+  }
+}
+
+@media (max-width: 600px) {
+  .data {
+    flex-direction: column;
+  }
+}
+
+.titleGreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 10px;
+  width: 200px;
+  color: white;
+  background-color: rgb(35, 152, 35);
+  border-radius: 10px;
+}
+
+.titleRed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  width: 200px;
+  color: white;
+  background-color: rgb(222, 54, 54);
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+.icon {
+  width: 24px;
+}
+
+svg:hover {
+  cursor: pointer;
+  border: 1px solid gray;
+}
+
+.count {
+  padding-right: 10px;
+  display: flex;
+  border: 1px solid lightgrey;
+  width: 100px;
+  justify-content: flex-end;
+}

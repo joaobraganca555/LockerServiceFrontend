@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { RegisterUser } from 'src/app/models/registerUser.model';
+import { RegisterUserAdmin } from 'src/app/models/registerUserAdmin.model';
 import { User } from 'src/app/models/user.model';
+import { UserUpdate } from 'src/app/models/userupdate.model';
 import { environment } from 'src/environments/environment.development';
 import { AlertService } from '../alerts/alert.service';
 
@@ -11,13 +13,15 @@ import { AlertService } from '../alerts/alert.service';
   providedIn: 'root'
 })
 export class AuthService {
-  private user: User = new User();
+  private user: User;
 
   constructor(
     private http: HttpClient,
     private alertService: AlertService,
     private router: Router
-  ) {}
+  ) {
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+  }
 
   getUser() {
     return this.user;
@@ -43,9 +47,24 @@ export class AuthService {
   }
 
   register(registerUser: RegisterUser): Observable<any> {
-    return this.http.post(`${environment.gatewayBaseUrl}/user/register`, {
-      ...registerUser
-    });
+    return this.http.post(
+      `${environment.gatewayBaseUrl}/user/register`,
+      registerUser
+    );
+  }
+
+  registerUserAdmin(registerUseradmin: RegisterUserAdmin): Observable<any> {
+    return this.http.post(
+      `${environment.gatewayBaseUrl}/user/create`,
+      registerUseradmin
+    );
+  }
+
+  updateUser(registerUseradmin: UserUpdate): Observable<any> {
+    return this.http.put(
+      `${environment.gatewayBaseUrl}/user/edit`,
+      registerUseradmin
+    );
   }
 
   logout() {
@@ -68,10 +87,38 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     // Check if the user has a valid JWT token in local storage
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+
     if (Object.keys(this.user).length === 0) {
       return false;
     } else {
-      return this.user.token !== '' && !this.isExpired();
+      if (
+        this.user.token === '' ||
+        this.user.token === null ||
+        this.user.token === undefined
+      ) {
+        return false;
+      }
+      if (this.isExpired()) {
+        return false;
+      }
+      return true;
     }
+  }
+
+  isAdmin(): boolean {
+    return this.user.role === 'ADMIN';
+  }
+
+  isEmployee(): boolean {
+    return this.user.role === 'EMPLOYEE';
+  }
+
+  isTransporter(): boolean {
+    return this.user.role === 'TRANSPORTER';
+  }
+
+  isClient(): boolean {
+    return this.user.role === 'CLIENT';
   }
 }

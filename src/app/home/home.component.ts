@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  constructor(private router: Router) {}
+  isAdmin: boolean = this.authService.isAdmin();
+  isEmployee: boolean = this.authService.isEmployee();
+  isTransporter: boolean = this.authService.isTransporter();
+  isClient: boolean = this.authService.isClient();
+
+  constructor(private router: Router, private authService: AuthService) {}
 
   redirect(pageName: string) {
     this.router.navigate([`${pageName}`]);

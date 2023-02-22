@@ -8,9 +8,8 @@ describe('SearchStationLockerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SearchStationLockerComponent ]
-    })
-    .compileComponents();
+      declarations: [SearchStationLockerComponent]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SearchStationLockerComponent);
     component = fixture.componentInstance;

@@ -6,7 +6,7 @@
       <form>
         <div class="mb-3">
           <label for="email" class="form-label">Email / Username</label>
-          <input [ngClass]="{'redBorder': failedLogin}" type="email" id="email" class="form-control" name="email"
+          <input [ngClass]="{ redBorder: failedLogin }" type="email" id="email" class="form-control" name="email"
             [(ngModel)]="emailOrUsername" required />
           <div *ngIf="!failedLogin" id="emailHelp" class="form-text">
             We'll never share your email or username with anyone else.
@@ -14,9 +14,11 @@
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Password</label>
-          <input [ngClass]="{'redBorder': failedLogin}" type="password" class="form-control" name="password"
-            id="passowrd" [(ngModel)]="password" required />
-          <label class="errorMessage" *ngIf="failedLogin">{{pd.detail}}</label>
+          <input [ngClass]="{ redBorder: failedLogin }" type="password" class="form-control" name="password"
+            id="passowrd" [(ngModel)]="password" required (keydown.enter)="login()" />
+          <label class="errorMessage" *ngIf="failedLogin">{{
+            pd.detail
+            }}</label>
         </div>
 
         <div class="tw-flex tw-justify-between">
