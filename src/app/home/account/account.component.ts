@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from 'src/app/core/services/alerts/alert.service';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { ProblemDetail } from 'src/app/models/problemDetail.model';
-import { UserUpdate } from 'src/app/models/userupdate.model';
+import { UserUpdate } from 'src/app/models/userUpdate.model';
 
 @Component({
   selector: 'app-account',

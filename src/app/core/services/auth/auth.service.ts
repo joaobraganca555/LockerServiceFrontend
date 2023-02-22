@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { RegisterUser } from 'src/app/models/registerUser.model';
 import { RegisterUserAdmin } from 'src/app/models/registerUserAdmin.model';
 import { User } from 'src/app/models/user.model';
-import { UserUpdate } from 'src/app/models/userupdate.model';
+import { UserUpdate } from 'src/app/models/userUpdate.model';
 import { environment } from 'src/environments/environment.development';
 import { AlertService } from '../alerts/alert.service';
 
