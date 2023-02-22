@@ -18,12 +18,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let orderR of orderRetain | filterTableRetain:searchTerm" (click)="onOrderClick(orderR.id)">
+              <tr *ngFor="let orderR of orderRetain | filterTableRetain:searchTerm">
                 <td>{{ orderR.destinationLockerId }}</td>
                 <td>{{ orderR.receiverEmail }}</td>
                 <td>{{ orderR.collectDays }}</td>
                 <td>{{ orderR.stationName }}</td>
-                <td class="text-center">
+                <td class="text-center" (click)="onOrderClick(orderR.id)">
                   <button type="button" class="btn btn-success d-flex justify-content-center align-items-center btn-md w-100">Collect</button>
                 </td>
               </tr>

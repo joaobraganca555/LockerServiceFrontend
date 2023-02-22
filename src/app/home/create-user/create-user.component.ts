@@ -39,7 +39,7 @@ export class CreateUserComponent {
       email: ['', [Validators.required, Validators.email]],
       username: ['', Validators.required],
       password1: ['', Validators.required],
-      role:['', Validators.required]
+      role: ['', Validators.required]
     });
   }
 
@@ -47,7 +47,7 @@ export class CreateUserComponent {
     this.router.navigate([`${pageName}`]);
   }
 
-  register() {
+  createUser() {
     this.passwordError = false;
     const newUserRole = new RegisterUserAdmin(
       this.firstName,
@@ -66,8 +66,11 @@ export class CreateUserComponent {
         }
       },
       error: (error) => {
+        this.myForm.reset();
+        console.error(error);
         this.pd = error.error;
         this.failedToRegister = true;
+        this.alert.showErrorToast('Failed to create user!');
       }
     });
   }
