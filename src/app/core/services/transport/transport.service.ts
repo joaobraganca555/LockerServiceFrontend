@@ -11,13 +11,26 @@ export class TransportService {
 
   getOrderToTranspoter(): Observable<any> {
     return this.http.get(
-      `${environment.gatewayBaseUrl}/order/origin`
+      `${environment.gatewayBaseUrl}/order/tos/origin`
     );
   }
 
   getOrderInTranspoter(): Observable<any> {
     return this.http.get(
-      `${environment.gatewayBaseUrl}/order/transporting`
+      `${environment.gatewayBaseUrl}/order/tos/transporting`
+    );
+  }
+
+  putOrderTransport(orderId: number): Observable<any> {
+    return this.http.put(
+      `${environment.gatewayBaseUrl}/order/tos/transport/${orderId}`,
+      {}
+    );
+  }
+  putOrderDelivery(orderId: number): Observable<any> {
+    return this.http.put(
+      `${environment.gatewayBaseUrl}/order/tos/deliver/${orderId}`,
+      {}
     );
   }
 

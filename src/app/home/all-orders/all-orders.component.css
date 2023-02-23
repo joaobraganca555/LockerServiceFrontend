@@ -1,6 +1,6 @@
 svg {
-  width: 24px;
-  margin-right: 10px;
+  width: 20px;
+  margin-right: 8px;
 }
 
 .content {
@@ -10,8 +10,32 @@ svg {
   border-radius: 5px;
   border: solid 1px lightgray;
   gap: 100px;
+  overflow-x: auto;
+  height: 75vh;
 }
 
 table {
   border: solid 1px lightgray;
+}
+
+.wrapper-table {
+  display: flex;
+  overflow-x: auto;
+}
+
+.sub-content {
+  width: 80%;
+  height: 100%;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+.btn {
+  font-size: 12px;
 }

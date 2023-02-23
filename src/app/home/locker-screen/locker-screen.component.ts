@@ -24,7 +24,19 @@ export class LockerScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id') || '');
-    console.log(this.id);
+    this.lockerService.getLockerById(this.id).subscribe({
+      next: (data: Locker) => {
+        this.failedToGetLockerInfo = false;
+        this.locker = data;
+      },
+      error: (error) => {
+        console.log(error);
+        this.failedToGetLockerInfo = true;
+      }
+    });
+  }
+
+  getLockerInfo() {
     this.lockerService.getLockerById(this.id).subscribe({
       next: (data: Locker) => {
         this.failedToGetLockerInfo = false;
@@ -69,15 +81,14 @@ export class LockerScreenComponent implements OnInit {
   }
 
   submit(): void {
-    console.log('Submit value:', this.displayValue);
     if (this.displayValue === '' || this.displayValue.length < 4) {
       this.alertService.showWarningToast('Please enter a valid pin!');
     } else {
       this.lockerService.openLockerById(this.id, this.displayValue).subscribe({
         next: (data) => {
           if (data) {
-            console.log(data);
-            this.alertService.showSuccessToast(data);
+            this.alertService.showSuccessToast(data.message);
+            this.getLockerInfo();
           }
         },
         error: (data) => {
@@ -92,8 +103,8 @@ export class LockerScreenComponent implements OnInit {
     this.lockerService.closeLockerById(this.id).subscribe({
       next: (data) => {
         if (data) {
-          console.log(data);
-          this.alertService.showSuccessToast(data);
+          this.alertService.showSuccessToast(data.message);
+          this.getLockerInfo();
         }
       },
       error: (data) => {

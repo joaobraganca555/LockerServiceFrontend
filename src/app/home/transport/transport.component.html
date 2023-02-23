@@ -10,24 +10,52 @@
           <table class="table">
             <thead>
               <tr>
+                <th>ID Order </th>
                 <th>Origin Lockers </th>
-                <th>Pick Up Order</th>
+                <th class="text-center">Pick Up Order</th>
                 <th>Destination Locker</th>
-                <th>Deposit Order</th>
                 <th>Destination Station</th>
                 <th>Order Status</th>
-                <th class="text-center">retain order</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let orderR of orderRetain | filterTableRetain:searchTerm" (click)="onOrderClick(orderR.id)">
-                <td>{{ orderR.destinationLockerId }}</td>
-                <td>{{ orderR.receiverEmail }}</td>
-                <td>{{ orderR.collectDays }}</td>
-                <td>{{ orderR.stationName }}</td>
-                <td class="text-center">
-                  <button type="button" class="btn btn-success d-flex justify-content-center align-items-center btn-md w-100">Collect</button>
+              <tr *ngFor="let toTransp of toTransport | filterTableTransporterPipe:searchTerm" >
+                <td>{{ toTransp.id }}</td>
+                <td>{{ toTransp.originLockerId }}</td>
+                <td class="text-center" (click)="onPickClick(toTransp.id)">
+                  <button type="button" class="btn btn-success d-flex justify-content-center align-items-center btn-md w-100">
+                    {{ pickedUp ? 'Picked Up' : 'Pick Order' }}
+                  </button>
                 </td>
+                <td>{{ toTransp.destinationLockerId }}</td>                
+                <td>{{ toTransp.stationName }}</td>
+                <td>{{ toTransp.status }}</td>               
+              </tr>
+            </tbody>
+          </table>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID Order </th>
+                <th>Origin Lockers </th>
+                <th class="text-center">Deposit Order</th>
+                <th>Destination Locker</th>
+                <th>Destination Station</th>
+                <th>Order Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let inTransp of inTransport | filterTableTransporterPipe:searchTerm" >
+                <td>{{ inTransp.id }}</td>
+                <td>{{ inTransp.originLockerId }}</td>
+                <td class="text-center" (click)="onDepositClick(inTransp.id)">
+                  <button type="button" class="btn btn-success d-flex justify-content-center align-items-center btn-md w-100">
+                    {{ deposited ? 'Deposited' : 'Deposit' }}
+                  </button>
+                </td>               
+                <td>{{ inTransp.destinationLockerId }}</td>                          
+                <td>{{ inTransp.stationName }}</td>
+                <td>{{ inTransp.status }}</td>               
               </tr>
             </tbody>
           </table>

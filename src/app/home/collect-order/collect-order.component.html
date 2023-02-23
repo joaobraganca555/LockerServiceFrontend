@@ -1,3 +1,7 @@
-<p>collect-order works!</p>
-
-<h1>{{ token }}</h1>
+<div class="pin-generator">
+    <h1>Generate a PIN for your order!</h1>
+    <h2>Locker ID: {{id}}
+    </h2>
+    <button (click)="getPin()">Generate PIN</button>
+    <p *ngIf="generatedPin">{{ generatedPin }}</p>
+</div>

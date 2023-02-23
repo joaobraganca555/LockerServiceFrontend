@@ -85,7 +85,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'collectOrder/:token',
+    path: 'collectOrder/:id',
     component: CollectOrderComponent
   },
   {

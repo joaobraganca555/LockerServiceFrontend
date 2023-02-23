@@ -40,6 +40,8 @@ export class OrderComponent implements OnInit {
 
   originLockerId = 0;
   destinationLockerId = 0;
+  blockInputs = false;
+  orderID = 0;
 
   // Errors
   isEmailEmpty = false;
@@ -114,7 +116,7 @@ export class OrderComponent implements OnInit {
           if (data) {
             this.originLockerId = data.originLockerId;
             this.destinationLockerId = data.destinationLockerId;
-
+            this.blockInputs = true;
             this.alertService.showSuccessToast(
               'Lockers were successfully reserved!'
             );
@@ -125,7 +127,9 @@ export class OrderComponent implements OnInit {
         error: (data) => {
           console.error(data);
           if (data.error.detail) {
-            this.alertService.showErrorToast(data.error.detail);
+            this.alertService.showErrorToast(
+              `You already have reserved lockers! Wait until expires.`
+            );
           } else {
             this.alertService.showErrorToast(
               'Error while reserving your lockers'
@@ -147,9 +151,8 @@ export class OrderComponent implements OnInit {
     );
     this.orderService.createOrder(order).subscribe({
       next: (data) => {
+        this.orderID = data.id
         if (data) {
-          console.log('Create Order', data);
-
           this.alertService
             .showConfirmationAlert(
               'Order Confirmed! ',
@@ -164,11 +167,12 @@ export class OrderComponent implements OnInit {
               if (result.isConfirmed) {
                 this.orderService.payOrder(data.id).subscribe({
                   next: (data) => {
+                    
                     if (data) {
                       this.alertService
                         .showSuccessAlertWithButtons(
                           'Thank for your order!',
-                          `<p>Order confirmed and payment completed!</p> Order ID: <strong>${this.originLockerId}</strong>, PIN: <strong>${data.pin}</strong>`,
+                          `<p>Order confirmed and payment completed!</p> Order ID: <strong>${this.orderID}</strong>, PIN: <strong>${data.pin}</strong>`,
                           'Go To Locker Screen',
                           'Ok'
                         )
@@ -177,8 +181,8 @@ export class OrderComponent implements OnInit {
                             this.router.navigate([
                               `lockerScreen/${this.originLockerId}`
                             ]);
-                          } else {
-                            this.router.navigate([`home`]);
+                          } else if (result.isDismissed) {
+                            this.router.navigate([`home/allOrders`]);
                           }
                         });
                     }
@@ -192,6 +196,7 @@ export class OrderComponent implements OnInit {
                 this.alertService.showWarningToast(
                   'Your order is pending payment!'
                 );
+                this.router.navigate([`home/allOrders`]);
               }
             });
         }

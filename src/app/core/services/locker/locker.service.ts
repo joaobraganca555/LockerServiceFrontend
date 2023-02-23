@@ -29,4 +29,11 @@ export class LockerService {
       {}
     );
   }
+
+  generatePin(id: number): Observable<any> {
+    return this.http.post(
+      `${environment.gatewayBaseUrl}/locker/engine/pin/${id}`,
+      {}
+    );
+  }
 }
